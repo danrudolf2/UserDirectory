@@ -33,6 +33,28 @@ class UserListViewModel: UserListViewModelProtcol {
     
 }
 
+class UserListViewModelWithProtocol: UserListViewModelProtcol, APIServiceProtocol {
+    
+    @Published var users = [User]()
+    @Published var fetchError: Error?
+    
+    private let apiService = APIService()
+    
+    init() {
+        apiService.delegate = self
+    }
+    
+    func didReceiveUsers(users: [User]) {
+        self.users = users
+    }
+    
+    func load() async {
+        await apiService.getUsersWithDelegate()
+    }
+    
+}
+
+
 #if DEBUG
 class Mock_UserListViewModel: UserListViewModelProtcol {
     
@@ -47,3 +69,4 @@ class Mock_UserListViewModel: UserListViewModelProtcol {
     
 }
 #endif
+

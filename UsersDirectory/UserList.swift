@@ -36,6 +36,7 @@ struct UserList_Previews: PreviewProvider {
     static var previews: some View {
         UserList(viewModel: Mock_UserListViewModel())
         UserList(viewModel: UserListViewModel())
+        UserList(viewModel: UserListViewModelWithProtocol())
     }
 }
 #endif
