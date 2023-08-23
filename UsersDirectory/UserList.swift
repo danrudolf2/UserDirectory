@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct UserList: View {
+struct UserList<T>: View where T: UserListViewModelProtcol {
     
-    @StateObject var viewModel = UserListViewModel()
+    @ObservedObject var viewModel: T
     
     var body: some View {
         NavigationStack {
@@ -31,8 +31,12 @@ struct UserList: View {
     }
 }
 
+#if DEBUG
 struct UserList_Previews: PreviewProvider {
     static var previews: some View {
-        UserList()
+        UserList(viewModel: Mock_UserListViewModel())
+        UserList(viewModel: UserListViewModel())
     }
 }
+#endif
+

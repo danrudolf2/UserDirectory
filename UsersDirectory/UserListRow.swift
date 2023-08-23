@@ -35,9 +35,11 @@ struct UserListRow: View {
     }
 }
 
+#if DEBUG
 struct UserListItem_Previews: PreviewProvider {
     static var previews: some View {
         UserListRow(user: User.preview)
             .previewLayout(.sizeThatFits)
     }
 }
+#endif

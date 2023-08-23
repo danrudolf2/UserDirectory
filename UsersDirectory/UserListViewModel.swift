@@ -7,10 +7,18 @@
 
 import Foundation
 
-@MainActor final class UserListViewModel: ObservableObject {
+@MainActor protocol UserListViewModelProtcol: ObservableObject {
+    var users: [User] { get set }
+    var fetchError: Error? { get set }
     
-    @Published private(set) var users = [User]()
-    @Published private(set) var fetchError: Error?
+    func load() async
+}
+
+
+class UserListViewModel: UserListViewModelProtcol {
+    
+    @Published var users = [User]()
+    @Published var fetchError: Error?
     
     private let apiService = APIService()
     
@@ -24,3 +32,18 @@ import Foundation
     }
     
 }
+
+#if DEBUG
+class Mock_UserListViewModel: UserListViewModelProtcol {
+    
+    @Published var users = [User]()
+    @Published var fetchError: Error?
+    
+    private let apiService = APIService()
+    
+    func load() async {
+        users = [User.preview]
+    }
+    
+}
+#endif

@@ -22,24 +22,61 @@ struct UserDetails: View {
                 .overlay(Circle().stroke(.gray, lineWidth: 2))
         }
         .padding(.top, 30)
-        VStack {
-            Text(user.email)
-            Text("\(user.age)")
-            Text(user.birthDate)
+        HStack{
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Text("email:")
+                        .font(.system(size: 13))
+                        .fontWeight(.medium)
+                        .foregroundColor(.gray)
+                        .frame(width: 60)
+                    Text(user.email)
+                }
+                HStack(alignment: .center) {
+                    Text("age:")
+                        .font(.system(size: 13))
+                        .fontWeight(.medium)
+                        .foregroundColor(.gray)
+                        .frame(width: 60)
+                    Text("\(user.age)")
+                }
+                HStack(alignment: .center) {
+                    Text("dob:")
+                        .font(.system(size: 13))
+                        .fontWeight(.medium)
+                        .foregroundColor(.gray)
+                        .frame(width: 60)
+                    Text(user.birthDate)
+                }
+            }
+            .padding(.top, 30)
+            .padding(.leading, 30)
+            Spacer()
+        }
+        HStack(alignment: .top) {
+            Text("address:")
+                .font(.system(size: 13))
+                .fontWeight(.medium)
+                .foregroundColor(.gray)
+                .frame(width: 60)
+        
+            VStack (alignment: .leading){
+                Text(user.address.address)
+                Text("\(user.address.city), \(user.address.state) \(user.address.postalCode)")
+            }
+            Spacer()
         }
         .padding(.top, 30)
-        VStack {
-            Text(user.address.address)
-            Text("\(user.address.city), \(user.address.state) \(user.address.postalCode)")
-        }
-        .padding(.top, 30)
-        Spacer()
-
+        .padding(.leading, 30)
         .navigationTitle(user.fullName)
         .navigationBarTitleDisplayMode(.inline)
+        
+        Spacer()
+
     }
 }
 
+#if DEBUG
 struct UserDetails_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -48,3 +85,4 @@ struct UserDetails_Previews: PreviewProvider {
         
     }
 }
+#endif

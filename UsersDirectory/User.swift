@@ -13,7 +13,7 @@ struct UsersDTO: Codable {
     let limit: Int
 }
 
-struct User: Codable, Hashable, Identifiable {
+struct User: Codable, Identifiable, Hashable {
     let id: Int
     let firstName: String
     let lastName: String
