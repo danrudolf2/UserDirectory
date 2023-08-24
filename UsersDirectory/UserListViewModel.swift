@@ -10,6 +10,7 @@ import Foundation
 @MainActor protocol UserListViewModelProtcol: ObservableObject {
     var users: [User] { get set }
     var fetchError: Error? { get set }
+    var isLoading: Bool { get set }
     
     func load() async
 }
@@ -17,9 +18,11 @@ import Foundation
 
 class UserListViewModel: UserListViewModelProtcol {
     
+    
     @Published var users = [User]()
     @Published var fetchError: Error?
-    
+    @Published var isLoading: Bool = false
+
     private let apiService = APIService()
     
     func load() async {
@@ -36,8 +39,9 @@ class UserListViewModel: UserListViewModelProtcol {
 class UserListViewModelWithProtocol: UserListViewModelProtcol, APIServiceProtocol {
     
     @Published var users = [User]()
-    @Published var fetchError: Error?
-    
+    @Published var fetchError: Error? = nil
+    @Published var isLoading: Bool = false
+
     private let apiService = APIService()
     
     init() {
@@ -45,10 +49,12 @@ class UserListViewModelWithProtocol: UserListViewModelProtcol, APIServiceProtoco
     }
     
     func didReceiveUsers(users: [User]) {
+        self.isLoading = false
         self.users = users
     }
     
     func load() async {
+        self.isLoading = true
         await apiService.getUsersWithDelegate()
     }
     
@@ -60,6 +66,7 @@ class Mock_UserListViewModel: UserListViewModelProtcol {
     
     @Published var users = [User]()
     @Published var fetchError: Error?
+    @Published var isLoading: Bool = false
     
     private let apiService = APIService()
     
@@ -67,6 +74,32 @@ class Mock_UserListViewModel: UserListViewModelProtcol {
         users = [User.preview]
     }
     
+}
+
+class Mock_UserListViewModelError: UserListViewModelProtcol {
+    
+    @Published var users = [User]()
+    @Published var fetchError: Error?
+    @Published var isLoading: Bool = false
+    
+    private let apiService = APIService()
+    
+    func load() async {
+        fetchError = URLError(.badURL)
+    }
+}
+
+class Mock_UserListViewModelLoading: UserListViewModelProtcol {
+    
+    @Published var users = [User]()
+    @Published var fetchError: Error?
+    @Published var isLoading: Bool = false
+    
+    private let apiService = APIService()
+    
+    func load() async {
+        isLoading = true
+    }
 }
 #endif
 
