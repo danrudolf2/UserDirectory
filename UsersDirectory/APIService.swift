@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol APIServiceProtocol: AnyObject {
+@MainActor protocol APIServiceProtocol: AnyObject {
     func didReceiveUsers(users: [User])
 }
 
@@ -30,7 +30,7 @@ class APIService {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let usersDTO = try JSONDecoder().decode(UsersDTO.self, from: data)
-            self.delegate?.didReceiveUsers(users: usersDTO.users)
+            await self.delegate?.didReceiveUsers(users: usersDTO.users)
         } catch {
             return
         }

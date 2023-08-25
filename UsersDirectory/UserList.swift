@@ -35,8 +35,10 @@ struct UserList<T>: View where T: UserListViewModelProtcol {
             }
         }
         .navigationBarTitleDisplayMode(.large)
-        .task {
-            await viewModel.load()
+        .onAppear {
+            Task {
+                await viewModel.load()
+            }
         }
     }
 }
